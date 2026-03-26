@@ -15,20 +15,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: false
 
-      - name: Checkout corpus-api (sibling directory)
+      - name: Checkout corpus-api
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/corpus-api
-          path: ../corpus-api
+          repository: policyobservatory/corpus-api
+          path: corpus-api
+          token: ${{ secrets.DEPLOY_TOKEN }}
 
-      - name: Checkout ph-corpus (sibling directory)
+      - name: Checkout ph-corpus
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/ph-corpus
-          path: ../ph-corpus
+          repository: policyobservatory/ph-corpus
+          path: corpus-api/../ph-corpus
+          token: ${{ secrets.DEPLOY_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -41,25 +41,25 @@ jobs:
       - name: Restore ChromaDB cache
         uses: actions/cache@v4
         with:
-          path: ../corpus-api/chroma_db
-          key: chroma-db-${{ hashFiles('../ph-corpus/**') }}
+          path: corpus-api/chroma_db
+          key: chroma-db-${{ hashFiles('ph-corpus/**') }}
           restore-keys: |
             chroma-db-
 
       - name: Install corpus-api dependencies
-        working-directory: ../corpus-api
+        working-directory: corpus-api
         run: |
           uv venv
           uv pip install -q -r requirements.txt
 
-      - name: Ingest corpus into ChromaDB
-        working-directory: ../corpus-api
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        run: uv run python ingest.py
+      # - name: Ingest corpus into ChromaDB
+      #   working-directory: corpus-api
+      #   env:
+      #     OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      #   run: uv run python ingest.py
 
       - name: Start corpus-api server
-        working-directory: ../corpus-api
+        working-directory: corpus-api
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
