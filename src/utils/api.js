@@ -72,5 +72,9 @@ export function groupBillsByID(items) {
     billMap.get(billId).push(item);
   }
 
+  for (const sections of billMap.values()) {
+    sections.sort((a, b) => a.meta.section_number - b.meta.section_number);
+  }
+
   return billMap;
 }
