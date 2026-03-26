@@ -1,4 +1,8 @@
-import { fetchBillProvisions, groupBillsByID } from "./utils/api.js";
+import {
+  fetchBillMetadata,
+  fetchBillProvisions,
+  groupBillsByID,
+} from "./utils/api.js";
 import { copyFile, ensureDir, writeHTMLFile } from "./utils/fs.js";
 import { generateIndexHTML } from "./html/index.js";
 import { generateBillHTML } from "./html/bill.js";
@@ -32,7 +36,8 @@ async function copyAssetsToDistribution() {
 async function generateBillPages(billMap) {
   console.log("Generating bill pages...");
   for (const [billId, items] of billMap) {
-    const billHTML = generateBillHTML(billId, items);
+    const billMetadata = await fetchBillMetadata(billId);
+    const billHTML = generateBillHTML(billId, items, billMetadata);
     await writeHTMLFile(`${CONFIG.PATHS.BILLS_DIST}/${billId}.html`, billHTML);
   }
 }

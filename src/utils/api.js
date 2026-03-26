@@ -78,3 +78,23 @@ export function groupBillsByID(items) {
 
   return billMap;
 }
+
+export async function fetchBillMetadata(billId) {
+  const baseUrl =
+    `http://${CONFIG.API.HOST}:${CONFIG.API.PORT}${CONFIG.API.BASE_PATH}`;
+  const endpoint = `${baseUrl.replace(/\/provisions.*/, "")}/bills/${billId}`;
+
+  try {
+    const response = await fetch(endpoint);
+    if (!response.ok) {
+      console.warn(
+        `Failed to fetch bill metadata for ${billId}: ${response.statusText}`,
+      );
+      return null;
+    }
+    return await response.json();
+  } catch (error) {
+    console.warn(`Error fetching bill metadata for ${billId}:`, error.message);
+    return null;
+  }
+}
