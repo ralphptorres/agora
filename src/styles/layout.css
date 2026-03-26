@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("./_variables.css");
+
+::selection {
+  background-color: var(--color-select-bg);
+  color: var(--color-dark-text);
+}
+
+.global-header {
+  background: white;
+  border-bottom: var(--border-default);
+}
+
+.header-content {
+  max-width: var(--max-width-container);
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.site-logo img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.site-logo a {
+  display: flex;
+  align-items: center;
+}
+
+.site-title {
+  font-size: 1.5em;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.site-title a {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.menu {
+  display: flex;
+  gap: 2rem;
+}
+
+.menu a {
+  color: var(--color-dark-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-dark-text);
+}
+
+.menu a:hover {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+footer {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-muted);
+  font-size: 0.9em;
+  background: white;
+  border-top: var(--border-default);
+  margin-top: var(--spacing-4xl);
+}
