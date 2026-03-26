@@ -1,0 +1,98 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Checkout corpus-api (sibling directory)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/corpus-api
+          path: ../corpus-api
+
+      - name: Checkout ph-corpus (sibling directory)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/ph-corpus
+          path: ../ph-corpus
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v2
+
+      - name: Restore ChromaDB cache
+        uses: actions/cache@v4
+        with:
+          path: ../corpus-api/chroma_db
+          key: chroma-db-${{ hashFiles('../ph-corpus/**') }}
+          restore-keys: |
+            chroma-db-
+
+      - name: Install corpus-api dependencies
+        working-directory: ../corpus-api
+        run: |
+          uv venv
+          uv pip install -q -r requirements.txt
+
+      - name: Ingest corpus into ChromaDB
+        working-directory: ../corpus-api
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: uv run python ingest.py
+
+      - name: Start corpus-api server
+        working-directory: ../corpus-api
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          uv run uvicorn api.main:app --port 8000 > /tmp/api.log 2>&1 &
+          for i in {1..30}; do
+            if curl -s http://localhost:8000/health > /dev/null; then
+              echo "API is ready"
+              break
+            fi
+            echo "Waiting for API... ($i/30)"
+            sleep 1
+          done
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.7.7
+
+      - name: Generate static site
+        run: deno task generate
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "dist"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
