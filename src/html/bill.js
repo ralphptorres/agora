@@ -19,7 +19,63 @@ function generateTopicsAnnotation(topics) {
   `;
 }
 
-export function generateBillHTML(billId, items) {
+function generateInfoLine(metadata) {
+  const parts = [];
+  if (metadata.dateFiled) {
+    parts.push(`<span>Proposed ${metadata.dateFiled}</span>`);
+  }
+  if (metadata.status) parts.push(`<span>${metadata.status}</span>`);
+  if (metadata.sourceUrl) {
+    parts.push(
+      `<a href="${metadata.sourceUrl}" target="_blank" rel="noopener noreferrer">Official Source</a>`,
+    );
+  }
+  return parts.length
+    ? parts.join('<span class="info-separator">|</span>')
+    : "";
+}
+
+function generateMetadataItem(label, value) {
+  return value
+    ? `<div class="meta-item"><strong>${label}</strong>${value}</div>`
+    : "";
+}
+
+function generateBillHeader(billId, metadata) {
+  const infoLine = generateInfoLine(metadata);
+  return `
+    <div class="bill-header">
+      <div class="bill-title-section">
+        <h1 class="bill-id">${billId}</h1>
+        ${
+    metadata.billTitle
+      ? `<h2 class="bill-title-ellipsis">${metadata.billTitle}</h2>`
+      : ""
+  }
+      </div>
+      
+      ${infoLine ? `<div class="bill-info-line">${infoLine}</div>` : ""}
+
+      <div class="bill-content-layout">
+        <div class="bill-summary-box">
+          ${
+    metadata.summary
+      ? `<div><strong>Summary</strong><p class="bill-summary">${metadata.summary}</p></div>`
+      : ""
+  }
+        </div>
+        
+        <div class="bill-metadata-stack">
+          ${generateMetadataItem("Domains", metadata.domains)}
+          ${generateMetadataItem("Jurisdiction", metadata.jurisdiction)}
+          ${generateMetadataItem("Legislature", metadata.legislature)}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+export function generateBillHTML(billId, items, billMetadata = null) {
   let sectionsHTML = "";
 
   for (const item of items) {
@@ -46,7 +102,7 @@ export function generateBillHTML(billId, items) {
     `;
   }
 
-  const metadata = extractBillMetadata(items);
+  const metadata = extractBillMetadata(items, billMetadata);
 
   const bodyContent = `
     ${generateHeader(CONFIG.UI.LOGO_PATH_BILL, CONFIG.UI.HOME_LINK_BILL)}
@@ -56,27 +112,7 @@ export function generateBillHTML(billId, items) {
     </nav>
     
     <main class="container">
-      <div class="bill-header">
-        <h1>${billId}</h1>
-        <div class="bill-meta">
-          <div class="meta-item">
-            <strong>Domains</strong>
-            ${metadata.domains}
-          </div>
-          <div class="meta-item">
-            <strong>Sections</strong>
-            ${metadata.sections}
-          </div>
-          <div class="meta-item">
-            <strong>Extracted</strong>
-            ${metadata.extractionDate}
-          </div>
-          <div class="meta-item">
-            <strong>Country</strong>
-            ${items[0].meta.country}
-          </div>
-        </div>
-      </div>
+      ${generateBillHeader(billId, metadata)}
       
       <div class="content">
         ${sectionsHTML}

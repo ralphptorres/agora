@@ -47,10 +47,93 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--spacing-3xl);
 }
 
+.bill-title-section {
+  margin-bottom: var(--spacing-xl);
+}
+
 .bill-header h1 {
   font-size: 2em;
   margin-bottom: 0.9375rem;
   color: var(--color-dark-text);
+}
+
+.bill-id {
+  font-size: 2em;
+  margin-bottom: 0.5rem;
+}
+
+.bill-title-ellipsis {
+  font-size: 1.2em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-dark-text);
+}
+
+.bill-info-line {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
+  font-size: 0.95em;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.info-separator {
+  color: var(--color-text-light);
+  margin: 0 var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.bill-info-line span {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bill-info-line a {
+  color: var(--color-dark-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-dark-text);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bill-info-line a:hover {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.bill-content-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
+.bill-summary-box {
+  border: var(--border-default);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.bill-summary-box strong {
+  color: var(--color-primary);
+  display: block;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bill-summary {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-dark-text);
+}
+
+.bill-metadata-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
 }
 
 .bill-meta {
@@ -210,5 +293,18 @@ main.container {
 
   .section-annotations {
     position: static;
+  }
+
+  .bill-content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .bill-info-line {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .bill-title-ellipsis {
+    font-size: 1em;
   }
 }
