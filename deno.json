@@ -1,8 +1,9 @@
 {
   "tasks": {
-    "generate": "deno run --allow-net --allow-write generate.js",
-    "serve": "deno run --allow-net --allow-read server.js",
-    "dev": "deno run --allow-net --allow-write --allow-read server.js & deno run --allow-net --allow-write generate.js"
+    "generate": "deno run --allow-net --allow-write --allow-read src/generate.js",
+    "serve": "deno run --allow-net --allow-read src/server.js",
+    "dev": "deno run --allow-net --allow-write --allow-read src/server.js & deno run --allow-net --allow-write --allow-read src/generate.js",
+    "fmt": "deno fmt"
   },
   "imports": {
     "std/": "https://deno.land/std@0.208.0/"
