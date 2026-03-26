@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("./layout.css");
+@import url("./_variables.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+  color: var(--color-dark-text);
+  background: var(--color-bg-off-white);
+}
+
+strong, b, h1, h2, h3, h4, h5, h6 {
+  font-weight: 550;
+}
+
+.container {
+  max-width: var(--max-width-container);
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+.index-header {
+  background: white;
+  padding: var(--spacing-4xl);
+  border-radius: var(--border-radius-md);
+  border: var(--border-default);
+  margin-bottom: var(--spacing-4xl);
+}
+
+.index-header h1 {
+  font-size: 2.5em;
+  margin-bottom: var(--spacing-xl);
+  color: var(--color-dark-text);
+}
+
+.index-header p {
+  font-size: 1.1em;
+  color: var(--color-text-light);
+}
+
+.bills-grid {
+  display: grid;
+  gap: var(--spacing-xl);
+}
+
+.bill-preview {
+  background: white;
+  padding: 1.5625rem;
+  border-radius: var(--border-radius-md);
+  border: var(--border-default);
+}
+
+.bill-preview h2 {
+  margin-bottom: 0.9375rem;
+  font-size: 1.5em;
+}
+
+.bill-preview a {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-primary);
+}
+
+.bill-preview a:hover {
+  border-bottom-color: var(--color-primary);
+}
+
+.bill-preview p {
+  margin: var(--spacing-xl) 0;
+}
+
+.domains {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.9em;
+}
+
+.btn {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  margin-top: var(--spacing-xl);
+  font-size: 0.9em;
+}
+
+.btn-primary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  transition: all 0.1s ease;
+  box-shadow: 3px 3px 0 var(--color-primary);
+}
+
+.btn-primary:hover {
+  color: var(--color-primary);
+  box-shadow: none;
+}
