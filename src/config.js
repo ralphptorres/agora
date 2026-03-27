@@ -21,13 +21,24 @@ export const CONFIG = {
     ASSETS_DIST: "./dist/assets",
   },
   UI: {
-    SITE_TITLE: "PHPO",
-    SITE_FULL_NAME: "PHPO AGORA",
+    SITE_TITLE: "Policy Observatory",
+    SITE_FULL_NAME: "aigov archive",
     SITE_SUBTITLE:
-      "A clone of agora.eto.tech. AGORA stands for AI GOvernance and Regulatory Archive.",
+      'An archive of AI governance policy. Inspired by <a href="https://agora.eto.tech">agora.eto.tech</a>. In early development. Contributions appreciated at <a href="https://github.com/policyobservatory/aigov-archive">the repo</a>.',
     LOGO_PATH_HOME: "assets/logo.svg",
     LOGO_PATH_BILL: "../assets/logo.svg",
     HOME_LINK_HOME: "index.html",
     HOME_LINK_BILL: "../index.html",
+    SOURCE_REPO: "https://github.com/policyobservatory/aigov-archive",
+    CONTENT_REPO: "https://github.com/policyobservatory/ph-corpus",
+    SOURCE_LICENSE: "https://opensource.org/license/mit",
+    CONTENT_LICENSE: "https://creativecommons.org/licenses/by/4.0",
+    NAV_LINKS: [
+      { label: "About", href: "https://github.com/policyobservatory" },
+      { label: "Blog", href: "https://substack.com/" },
+      { label: "Data", href: "https://github.com/policyobservatory/ph-corpus" },
+      { label: "Tools", href: "https://github.com/orgs/policyobservatory/repositories" },
+      { label: "Subscribe", href: "/" },
+    ],
   },
 };
