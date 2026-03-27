@@ -15,6 +15,11 @@ body {
   background: var(--color-bg-off-white);
 }
 
+::selection {
+  background-color: var(--color-green-dark);
+  color: white;
+}
+
 strong, b, h1, h2, h3, h4, h5, h6 {
   font-weight: 550;
 }
@@ -34,12 +39,11 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 .breadcrumb a {
   color: var(--color-dark-text);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-dark-text);
+  border-bottom: var(--border-link);
 }
 
 .breadcrumb a:hover {
-  border-bottom-color: var(--color-primary);
-  color: var(--color-primary);
+  border-bottom: var(--border-link-hover);
 }
 
 .bill-header {
@@ -71,6 +75,45 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   color: var(--color-dark-text);
 }
 
+.bill-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-lg);
+}
+
+.bill-title-ellipsis {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.toggle-title-wrapper {
+  color: var(--color-dark-text);
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.bill-title-full {
+  font-size: 1.2em;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-dark-text);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.toggle-title {
+  font-size: 0.95em;
+  color: var(--color-dark-text);
+  text-decoration: none;
+  border-bottom: var(--border-link);
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.toggle-title:hover {
+  border-bottom: var(--border-link-hover);
+}
+
 .bill-info-line {
   display: flex;
   align-items: center;
@@ -82,7 +125,7 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 
 .info-separator {
-  color: var(--color-text-light);
+  color: var(--color-border);
   margin: 0 var(--spacing-xs);
   flex-shrink: 0;
 }
@@ -95,14 +138,13 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 .bill-info-line a {
   color: var(--color-dark-text);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-dark-text);
+  border-bottom: var(--border-link);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .bill-info-line a:hover {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
+  border-bottom: var(--border-link-hover);
 }
 
 .bill-content-layout {
@@ -185,7 +227,7 @@ main.container {
 
 .bill-section:hover .section-body,
 .bill-section:hover .section-annotations {
-  background-color: var(--color-hover-bg);
+  background-color: var(--color-green-light);
 }
 
 .bill-section:hover .section-body {
@@ -225,8 +267,9 @@ main.container {
   border-bottom-right-radius: var(--border-radius-lg);
 }
 
-.section-body p {
-  margin-bottom: 0.9375rem;
+.section-body ::selection {
+  background-color: var(--color-green-dark);
+  color: white;
 }
 
 .section-body h1 {
@@ -272,7 +315,7 @@ main.container {
 .annotation-item strong {
   display: inline;
   font-size: 0.85em;
-  color: var(--color-text-light);
+  color: var(--color-dark-text);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-right: 0.5rem;
