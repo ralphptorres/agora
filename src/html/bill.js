@@ -9,12 +9,33 @@ import { CONFIG } from "../config.js";
 
 function generateTopicsAnnotation(topics) {
   if (topics.length === 0) return "";
-
   const topicsHtml = formatArrayAsHTMLLabels(topics);
   return `
     <div class="annotation-item">
       <strong>Topics</strong>
       <div class="topics">${topicsHtml}</div>
+    </div>
+  `;
+}
+
+function generateTitleSection(metadata) {
+  if (!metadata.billTitle) return "";
+  
+  const hasFullTitle = metadata.billTitleFull && metadata.billTitleFull.length > 0;
+  const expandLink = hasFullTitle 
+    ? `<span class="toggle-title-wrapper"><a href="javascript:void(0)" class="toggle-title" onclick="toggleBillTitle(event)">(expand)</a></span>`
+    : "";
+  const fullTitle = hasFullTitle
+    ? `<h2 class="bill-title-full" id="bill-title-full" style="display:none;">${metadata.billTitleFull}</h2>`
+    : "";
+
+  return `
+    <div class="bill-title-container">
+      <div class="bill-title-wrapper">
+        <h2 class="bill-title-ellipsis" id="bill-title-ellipsis">${metadata.billTitle}</h2>
+        ${expandLink}
+      </div>
+      ${fullTitle}
     </div>
   `;
 }
@@ -47,12 +68,7 @@ function generateBillHeader(billId, metadata) {
     <div class="bill-header">
       <div class="bill-title-section">
         <h1 class="bill-id">${billId}</h1>
-        ${
-    metadata.billTitle
-      ? `<h2 class="bill-title-ellipsis">${metadata.billTitle}</h2>`
-      : ""
-  }
-      </div>
+        ${generateTitleSection(metadata)}
       
       ${infoLine ? `<div class="bill-info-line">${infoLine}</div>` : ""}
 
