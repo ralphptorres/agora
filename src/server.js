@@ -19,22 +19,26 @@ function getMimeType(filepath) {
   return MIME_TYPES[ext] || "application/octet-stream";
 }
 
-function pathToFile(urlPath) {
+function normalizePath(urlPath) {
   let path = urlPath;
+  if (path.startsWith("/")) path = path.substring(1);
+  if (path.endsWith("/") && path !== "") path = path.substring(0, path.length - 1);
+  return path === "" || !path.includes(".") ? "index.html" : path;
+}
 
-  if (path.startsWith("/")) {
-    path = path.substring(1);
-  }
+function pathToFile(urlPath) {
+  return `${CONFIG.SERVER.PUBLIC_DIR}/${normalizePath(urlPath)}`;
+}
 
-  if (path.endsWith("/") && path !== "") {
-    path = path.substring(0, path.length - 1);
-  }
-
-  if (path === "" || !path.includes(".")) {
-    path = "index.html";
-  }
-
-  return `${CONFIG.SERVER.PUBLIC_DIR}/${path}`;
+function createErrorResponse(status, message) {
+  const statusMessages = {
+    404: "404 - File Not Found",
+    500: "500 - Internal Server Error",
+  };
+  return new Response(statusMessages[status] || message, {
+    status,
+    headers: { "Content-Type": "text/plain" },
+  });
 }
 
 async function handleRequest(req) {
@@ -52,29 +56,24 @@ async function handleRequest(req) {
     });
   } catch (error) {
     if (error instanceof Deno.errors.NotFound) {
-      return new Response("404 - File Not Found", {
-        status: 404,
-        headers: { "Content-Type": "text/plain" },
-      });
+      return createErrorResponse(404, "");
     }
-
     console.error("Error serving request:", error);
-    return new Response("500 - Internal Server Error", {
-      status: 500,
-      headers: { "Content-Type": "text/plain" },
-    });
+    return createErrorResponse(500, "");
   }
 }
 
-async function main() {
-  console.log("\nPHPO AGORA Server");
+function logStartup() {
+  console.log("\naigov archive Server");
   console.log("---------------------------");
   console.log(`Listening on http://localhost:${CONFIG.SERVER.PORT}`);
   console.log(`Serving files from: ${CONFIG.SERVER.PUBLIC_DIR}`);
   console.log(`\nVisit http://localhost:${CONFIG.SERVER.PORT} to view bills`);
   console.log("Make sure to run 'deno task generate' first\n");
+}
 
-  const requestHandler = async (req) => {
+function createRequestHandler() {
+  return async (req) => {
     const method = req.method;
     const url = new URL(req.url);
     const path = url.pathname;
@@ -85,8 +84,11 @@ async function main() {
 
     return response;
   };
+}
 
-  await serve(requestHandler, { port: CONFIG.SERVER.PORT });
+async function main() {
+  logStartup();
+  await serve(createRequestHandler(), { port: CONFIG.SERVER.PORT });
 }
 
 main().catch((error) => {
