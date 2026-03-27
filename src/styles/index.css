@@ -15,6 +15,11 @@ body {
   background: var(--color-bg-off-white);
 }
 
+::selection {
+  background-color: var(--color-green-dark);
+  color: white;
+}
+
 strong, b, h1, h2, h3, h4, h5, h6 {
   font-weight: 550;
 }
@@ -26,59 +31,133 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 
 .index-header {
-  background: white;
-  padding: var(--spacing-4xl);
-  border-radius: var(--border-radius-md);
-  border: var(--border-default);
+  padding: var(--spacing-2xl) var(--spacing-2xl);
   margin-bottom: var(--spacing-4xl);
 }
 
 .index-header h1 {
   font-size: 2.5em;
   margin-bottom: var(--spacing-xl);
-  color: var(--color-dark-text);
+  color: var(--color-primary);
+  font-weight: 900;
+}
+
+.index-header h1 .agora {
+  color: var(--color-primary);
+  font-weight: 900;
 }
 
 .index-header p {
   font-size: 1.1em;
-  color: var(--color-text-light);
+  color: var(--color-dark-text);
+}
+
+.index-header a {
+  color: var(--color-dark-text);
+  text-decoration: none;
+  border-bottom: var(--border-link);
+}
+
+.index-header a:hover {
+  border-bottom: var(--border-link-hover);
+}
+
+.content {
+  background: white;
+  border: var(--border-default);
 }
 
 .bills-grid {
   display: grid;
-  gap: var(--spacing-xl);
+  gap: 0;
 }
 
 .bill-preview {
   background: white;
-  padding: 1.5625rem;
-  border-radius: var(--border-radius-md);
-  border: var(--border-default);
+  padding: var(--spacing-2xl);
+  border-radius: 0;
+  border: none;
+  min-width: 0;
+  overflow: hidden;
 }
 
-.bill-preview h2 {
-  margin-bottom: 0.9375rem;
-  font-size: 1.5em;
-}
-
-.bill-preview a {
-  color: var(--color-primary);
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-primary);
-}
-
-.bill-preview a:hover {
-  border-bottom-color: var(--color-primary);
+.bill-preview:hover {
+  background: var(--color-green-light);
 }
 
 .bill-preview p {
-  margin: var(--spacing-xl) 0;
+  margin: 0;
+  margin-bottom: var(--spacing-lg);
 }
 
-.domains {
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-  font-size: 0.9em;
+.bill-preview a {
+  color: var(--color-dark-text);
+  text-decoration: none;
+  border-bottom: var(--border-link);
+}
+
+.bill-preview a:hover {
+  border-bottom: var(--border-link-hover);
+}
+
+.bill-preview-id {
+  font-size: 1em;
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 100%;
+  color: var(--color-dark-text);
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.bill-preview-id strong {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
+  flex: 1;
+}
+
+.bill-preview-id strong a {
+  color: var(--color-dark-text);
+  border-bottom: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.bill-preview-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+  margin-left: 0.25rem;
+}
+
+.bill-preview-infoline,
+.bill-preview-summary,
+.bill-preview-domains {
+  margin: 0;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.bill-preview-summary {
+  color: var(--color-dark-text);
+}
+
+.info-separator {
+  color: var(--color-border);
+  margin: 0 var(--spacing-xs);
+}
+
+.bill-preview-actions {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -86,19 +165,18 @@ strong, b, h1, h2, h3, h4, h5, h6 {
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--border-radius-sm);
   text-decoration: none;
-  margin-top: var(--spacing-xl);
   font-size: 0.9em;
 }
 
 .btn-primary {
   background: transparent;
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary);
+  color: var(--color-dark-text);
+  border: 1px solid var(--color-dark-text);
   transition: all 0.1s ease;
-  box-shadow: 3px 3px 0 var(--color-primary);
+  box-shadow: 3px 3px 0 var(--color-dark-text);
 }
 
 .btn-primary:hover {
-  color: var(--color-primary);
+  color: var(--color-dark-text);
   box-shadow: none;
 }
