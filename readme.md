@@ -1,7 +1,7 @@
-# agora
+# aigov archive
 
-A clone of [agora.eto.tech]. AGORA stands for AI GOvernance and Regulatory
-Archive.
+An archive of AI governance policy. Inspired by [agora.eto.tech]. In early
+development.
 
 [agora.eto.tech]: https://agora.eto.tech
 
