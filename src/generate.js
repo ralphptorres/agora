@@ -35,44 +35,63 @@ async function copyAssetsToDistribution() {
 
 async function generateBillPages(billMap) {
   console.log("Generating bill pages...");
+  const billMetadataMap = new Map();
   for (const [billId, items] of billMap) {
     const billMetadata = await fetchBillMetadata(billId);
+    billMetadataMap.set(billId, billMetadata);
     const billHTML = generateBillHTML(billId, items, billMetadata);
     await writeHTMLFile(`${CONFIG.PATHS.BILLS_DIST}/${billId}.html`, billHTML);
   }
+  return billMetadataMap;
+}
+
+async function ensureDirectories() {
+  console.log("Creating directories...");
+  await ensureDir(CONFIG.PATHS.DIST_ROOT);
+  await ensureDir(CONFIG.PATHS.STYLES_DIST);
+  await ensureDir(CONFIG.PATHS.BILLS_DIST);
+  await ensureDir(CONFIG.PATHS.ASSETS_DIST);
+}
+
+async function fetchAndGroupBills() {
+  console.log("Fetching bill provisions...");
+  const data = await fetchBillProvisions();
+  console.log(`Fetched ${data.total} provisions`);
+
+  console.log("Grouping bills by ID...");
+  const billMap = groupBillsByID(data.items);
+  console.log(`Found ${billMap.size} unique bills`);
+
+  return billMap;
+}
+
+async function copyAssets() {
+  await copyStyles();
+  await copyAssetsToDistribution();
+}
+
+function logCompletionSummary(billCount) {
+  console.log("\nGeneration complete!");
+  console.log(`   - Copied ${STYLES_TO_COPY.length} stylesheets`);
+  console.log("   - Copied assets/logo.svg");
+  console.log("   - Generated index.html");
+  console.log(`   - Generated ${billCount} bill pages`);
+  console.log("\nRun 'deno task serve' to view the website");
 }
 
 async function main() {
   try {
-    console.log("Fetching bill provisions...");
-    const data = await fetchBillProvisions();
-    console.log(`Fetched ${data.total} provisions`);
+    const billMap = await fetchAndGroupBills();
+    await ensureDirectories();
+    await copyAssets();
 
-    console.log("Grouping bills by ID...");
-    const billMap = groupBillsByID(data.items);
-    console.log(`Found ${billMap.size} unique bills`);
-
-    console.log("Creating directories...");
-    await ensureDir(CONFIG.PATHS.DIST_ROOT);
-    await ensureDir(CONFIG.PATHS.STYLES_DIST);
-    await ensureDir(CONFIG.PATHS.BILLS_DIST);
-    await ensureDir(CONFIG.PATHS.ASSETS_DIST);
-
-    await copyStyles();
-    await copyAssetsToDistribution();
+    const billMetadataMap = await generateBillPages(billMap);
 
     console.log("Generating index page...");
-    const indexHTML = generateIndexHTML(billMap);
+    const indexHTML = generateIndexHTML(billMap, billMetadataMap);
     await writeHTMLFile(`${CONFIG.PATHS.DIST_ROOT}/index.html`, indexHTML);
 
-    await generateBillPages(billMap);
-
-    console.log("\nGeneration complete!");
-    console.log(`   - Copied ${STYLES_TO_COPY.length} stylesheets`);
-    console.log("   - Copied assets/logo.svg");
-    console.log("   - Generated index.html");
-    console.log(`   - Generated ${billMap.size} bill pages`);
-    console.log("\nRun 'deno task serve' to view the website");
+    logCompletionSummary(billMap.size);
   } catch (error) {
     console.error("Error during generation:", error);
     Deno.exit(1);
