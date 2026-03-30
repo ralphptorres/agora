@@ -33,7 +33,11 @@ function generateBillPreview(billId, metadata) {
 }
 
 export function generateIndexHTML(billMap, billMetadataMap = new Map()) {
-  const billListHTML = Array.from(billMap).map(([billId, items]) => {
+  const sortedBills = Array.from(billMap).sort(([billIdA], [billIdB]) => {
+    return billIdA.localeCompare(billIdB, undefined, { numeric: true });
+  });
+
+  const billListHTML = sortedBills.map(([billId, items]) => {
     const billMetadata = billMetadataMap.get(billId);
     const metadata = extractBillMetadata(items, billMetadata);
     return generateBillPreview(billId, metadata);
